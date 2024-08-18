@@ -1,19 +1,20 @@
+import { X } from "phosphor-react";
 import { useContext } from "react";
-import { TransactionsContext } from "../../contexts/transactionsContext";
 
 import { Header } from "../../components/header";
 import { Summary } from "../../components/summary";
+import { TransactionsContext } from "../../contexts/transactionsContext";
+import { dateFormatter, priceFormatter } from "../../utils/formetter";
 import { SearchForm } from "./components/searchForm";
-
 import {
+  DeleteButton,
   PriceHighlight,
   TransactionsContainer,
   TransactionsTable,
 } from "./styles";
-import { dateFormatter, priceFormatter } from "../../utils/formetter";
 
 export function Transactions() {
-  const { transactions } = useContext(TransactionsContext);
+  const { transactions, deleteTransaction } = useContext(TransactionsContext);
 
   return (
     <div>
@@ -27,7 +28,7 @@ export function Transactions() {
           <tbody>
             {transactions.map((transaction) => (
               <tr key={transaction.id}>
-                <td width="45%">{transaction.from}</td>
+                <td width="45%">{transaction.description}</td>
                 <td>
                   <PriceHighlight
                     variant={
@@ -40,6 +41,13 @@ export function Transactions() {
                 </td>
                 <td>{transaction.category}</td>
                 <td>{dateFormatter.format(new Date(transaction.createdAt))}</td>
+                <td>
+                  <DeleteButton
+                    onClick={() => deleteTransaction(transaction.id)}
+                  >
+                    <X size={20} />
+                  </DeleteButton>
+                </td>
               </tr>
             ))}
           </tbody>
