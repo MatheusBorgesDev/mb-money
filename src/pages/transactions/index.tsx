@@ -1,5 +1,5 @@
 import { X } from "phosphor-react";
-import { useContext } from "react";
+import { useContextSelector } from "use-context-selector";
 
 import { Header } from "../../components/header";
 import { Summary } from "../../components/summary";
@@ -14,7 +14,15 @@ import {
 } from "./styles";
 
 export function Transactions() {
-  const { transactions, deleteTransaction } = useContext(TransactionsContext);
+  const { transactions, deleteTransaction } = useContextSelector(
+    TransactionsContext,
+    (context) => {
+      return {
+        transactions: context.transactions,
+        deleteTransaction: context.deleteTransaction,
+      };
+    }
+  );
 
   return (
     <div>
